@@ -1,0 +1,10 @@
+[
+  { "id": "gal-001", "url": "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=900&q=80", "titulo": "Corte y estilizado moderno" },
+  { "id": "gal-002", "url": "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=900&q=80", "titulo": "Coloración balayage" },
+  { "id": "gal-003", "url": "https://images.unsplash.com/photo-1610992015734-5a3c66d97a05?auto=format&fit=crop&w=900&q=80", "titulo": "Manicure en tonos nude" },
+  { "id": "gal-004", "url": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80", "titulo": "Maquillaje de novia" },
+  { "id": "gal-005", "url": "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=900&q=80", "titulo": "Pedicure spa" },
+  { "id": "gal-006", "url": "https://images.unsplash.com/photo-1605497788044-5a32c7078486?auto=format&fit=crop&w=900&q=80", "titulo": "Diseño de cejas" },
+  { "id": "gal-007", "url": "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=900&q=80", "titulo": "Peinado de evento" },
+  { "id": "gal-008", "url": "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=900&q=80", "titulo": "Tratamiento facial" }
+]

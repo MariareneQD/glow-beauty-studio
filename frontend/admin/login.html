@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acceso Administrador | Glow Beauty Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="login-page">
+
+  <div class="login-box">
+    <div class="marca">Glow<span>Beauty</span></div>
+    <p class="subtitulo">Panel de administración — acceso restringido</p>
+
+    <form id="formLogin">
+      <div class="campo-login">
+        <label for="usuario">Usuario</label>
+        <div class="input-wrap">
+          <i class="fa-regular fa-user"></i>
+          <input type="text" id="usuario" placeholder="admin" required autocomplete="username">
+        </div>
+      </div>
+      <div class="campo-login">
+        <label for="clave">Contraseña</label>
+        <div class="input-wrap">
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" id="clave" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+      </div>
+      <button type="submit" class="btn-login"><i class="fa-solid fa-right-to-bracket"></i> Iniciar sesión</button>
+      <p class="error-login" id="errorLogin">Usuario o contraseña incorrectos.</p>
+    </form>
+
+    <div class="credenciales-demo">
+      Credenciales de demostración: <strong>admin</strong> / <strong>admin123</strong><br>
+      (cámbialas en <code>backend/data/admin.json</code>)
+    </div>
+
+    <a href="/" class="volver"><i class="fa-solid fa-arrow-left"></i> Volver al sitio</a>
+  </div>
+
+<script src="js/admin.js"></script>
+</body>
+</html>

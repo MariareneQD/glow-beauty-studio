@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel de Administración | Glow Beauty Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<div class="admin-layout">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar">
+    <div class="marca">Glow<span>Beauty</span></div>
+    <nav>
+      <button class="item-menu activo" data-panel="panelResumen"><i class="fa-solid fa-chart-pie"></i> Resumen</button>
+      <button class="item-menu" data-panel="panelReservas"><i class="fa-regular fa-calendar-check"></i> Reservas</button>
+      <button class="item-menu" data-panel="panelServicios"><i class="fa-solid fa-spa"></i> Servicios</button>
+      <button class="item-menu" data-panel="panelGaleria"><i class="fa-regular fa-images"></i> Galería</button>
+    </nav>
+    <button class="cerrar-sesion" id="btnCerrarSesion"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</button>
+  </aside>
+
+  <!-- ===== MAIN ===== -->
+  <main class="main-admin">
+    <div class="topbar-admin">
+      <h1 id="tituloPanel">Resumen general</h1>
+      <div class="usuario-chip">
+        <div class="avatar">A</div>
+        <span id="nombreUsuario">admin</span>
+      </div>
+    </div>
+
+    <!-- ---- RESUMEN ---- -->
+    <section class="panel-seccion activo" id="panelResumen">
+      <div class="tarjetas-resumen">
+        <div class="resumen-card morado">
+          <div class="icono"><i class="fa-regular fa-calendar-check"></i></div>
+          <strong id="totalReservas">0</strong>
+          <span>Reservas totales</span>
+        </div>
+        <div class="resumen-card dorado">
+          <div class="icono"><i class="fa-regular fa-clock"></i></div>
+          <strong id="totalPendientes">0</strong>
+          <span>Pendientes por confirmar</span>
+        </div>
+        <div class="resumen-card verde">
+          <div class="icono"><i class="fa-solid fa-spa"></i></div>
+          <strong id="totalServicios">0</strong>
+          <span>Servicios activos</span>
+        </div>
+        <div class="resumen-card azul">
+          <div class="icono"><i class="fa-regular fa-images"></i></div>
+          <strong id="totalGaleria">0</strong>
+          <span>Imágenes en galería</span>
+        </div>
+      </div>
+
+      <div class="bloque">
+        <div class="bloque-header">
+          <h2>Últimas reservas</h2>
+          <button class="btn-admin secundario peq" data-ir="panelReservas">Ver todas <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        <div class="tabla-wrap">
+          <table>
+            <thead>
+              <tr><th>Cliente</th><th>Servicio</th><th>Fecha</th><th>Estado</th></tr>
+            </thead>
+            <tbody id="tablaResumenReservas"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---- RESERVAS ---- -->
+    <section class="panel-seccion" id="panelReservas">
+      <div class="bloque">
+        <div class="bloque-header">
+          <h2>Todas las reservas</h2>
+          <div class="filtros">
+            <select id="filtroEstado">
+              <option value="todos">Todos los estados</option>
+              <option value="pendiente">Pendientes</option>
+              <option value="confirmada">Confirmadas</option>
+              <option value="cancelada">Canceladas</option>
+            </select>
+          </div>
+        </div>
+        <div class="tabla-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Cliente</th><th>Teléfono</th><th>Servicio</th><th>Fecha</th><th>Hora</th><th>Estado</th><th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tablaReservas"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---- SERVICIOS ---- -->
+    <section class="panel-seccion" id="panelServicios">
+      <div class="bloque">
+        <div class="bloque-header">
+          <h2>Servicios del salón</h2>
+          <button class="btn-admin primario" id="btnNuevoServicio"><i class="fa-solid fa-plus"></i> Nuevo servicio</button>
+        </div>
+        <div class="grid-servicios-admin" id="gridServiciosAdmin"></div>
+      </div>
+    </section>
+
+    <!-- ---- GALERIA ---- -->
+    <section class="panel-seccion" id="panelGaleria">
+      <div class="bloque">
+        <div class="bloque-header">
+          <h2>Galería de trabajos realizados</h2>
+          <button class="btn-admin primario" id="btnNuevaImagen"><i class="fa-solid fa-plus"></i> Agregar imagen</button>
+        </div>
+        <div class="grid-galeria-admin" id="gridGaleriaAdmin"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ===== MODAL SERVICIO ===== -->
+<div class="modal-overlay" id="modalServicio">
+  <div class="modal-box" style="position:relative;">
+    <button class="cerrar-modal" data-cerrar="modalServicio"><i class="fa-solid fa-xmark"></i></button>
+    <h3 id="tituloModalServicio">Nuevo servicio</h3>
+    <form id="formServicio">
+      <input type="hidden" id="servicioId">
+      <div class="campo-login"><label>Nombre</label><div class="input-wrap"><input type="text" id="servicioNombre" required></div></div>
+      <div class="campo-login"><label>Categoría</label><div class="input-wrap"><input type="text" id="servicioCategoria" required></div></div>
+      <div class="campo-login"><label>Descripción</label><div class="input-wrap"><textarea id="servicioDescripcion" rows="3" required></textarea></div></div>
+      <div class="campo-login"><label>Precio (Bs)</label><div class="input-wrap"><input type="number" id="servicioPrecio" required></div></div>
+      <div class="campo-login"><label>Duración</label><div class="input-wrap"><input type="text" id="servicioDuracion" placeholder="Ej: 45 min" required></div></div>
+      <div class="campo-login"><label>URL de imagen</label><div class="input-wrap"><input type="url" id="servicioImagen" placeholder="https://..." required></div></div>
+      <div class="modal-botones">
+        <button type="button" class="btn-admin secundario" data-cerrar="modalServicio">Cancelar</button>
+        <button type="submit" class="btn-admin primario">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== MODAL GALERIA ===== -->
+<div class="modal-overlay" id="modalGaleria">
+  <div class="modal-box" style="position:relative;">
+    <button class="cerrar-modal" data-cerrar="modalGaleria"><i class="fa-solid fa-xmark"></i></button>
+    <h3>Agregar imagen a la galería</h3>
+    <form id="formGaleria">
+      <div class="campo-login"><label>URL de la imagen</label><div class="input-wrap"><input type="url" id="galeriaUrl" placeholder="https://..." required></div></div>
+      <div class="campo-login"><label>Título / descripción</label><div class="input-wrap"><input type="text" id="galeriaTitulo" placeholder="Ej: Coloración balayage" required></div></div>
+      <div class="modal-botones">
+        <button type="button" class="btn-admin secundario" data-cerrar="modalGaleria">Cancelar</button>
+        <button type="submit" class="btn-admin primario">Agregar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/admin.js"></script>
+</body>
+</html>

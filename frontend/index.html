@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glow Beauty Studio | Salón de Belleza</title>
+<meta name="description" content="Salón de belleza profesional: cabello, uñas, maquillaje, spa y mucho más. Reserva tu cita en línea o por WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="header" id="header">
+  <div class="contenedor">
+    <a href="#inicio" class="logo">Glow<span>Beauty</span></a>
+    <nav class="nav-links">
+      <a href="#inicio">Inicio</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#galeria">Galería</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="#ubicacion">Ubicación</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#reservas" class="btn btn-secundario">Reservar cita</a>
+    </div>
+    <button class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="inicio">
+  <div class="contenedor">
+    <div class="hero-contenido">
+      <span class="etiqueta">SALÓN DE BELLEZA PROFESIONAL</span>
+      <h1>Realza tu belleza <em>natural</em> con manos expertas</h1>
+      <p>Cabello, uñas, maquillaje, cejas y spa en un solo lugar. Vive una experiencia de belleza profesional, cómoda y personalizada para ti.</p>
+      <div class="hero-botones">
+        <a href="#reservas" class="btn btn-primario"><i class="fa-regular fa-calendar-check"></i> Reservar ahora</a>
+        <a href="https://wa.me/59100000000?text=Hola%2C%20quiero%20reservar%20una%20cita" target="_blank" class="btn btn-secundario"><i class="fa-brands fa-whatsapp"></i> Escríbenos</a>
+      </div>
+      <div class="hero-stats">
+        <div><strong>8+</strong><span>Años de experiencia</span></div>
+        <div><strong>3,200+</strong><span>Clientas felices</span></div>
+        <div><strong>15</strong><span>Especialistas</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICIOS ===== -->
+<section class="servicios" id="servicios">
+  <div class="contenedor">
+    <div class="titulo-seccion">
+      <span class="etiqueta">Nuestros servicios</span>
+      <h2>Servicios que realizamos</h2>
+      <p>Elige el servicio que necesitas y reserva tu cita en línea en pocos segundos.</p>
+    </div>
+    <div class="grid-servicios" id="gridServicios">
+      <!-- Las tarjetas de servicio se cargan dinámicamente desde el backend (main.js) -->
+    </div>
+  </div>
+</section>
+
+<!-- ===== GALERIA / CARRUSEL ===== -->
+<section class="galeria" id="galeria">
+  <div class="contenedor">
+    <div class="titulo-seccion">
+      <span class="etiqueta">Trabajos realizados</span>
+      <h2>Galería de resultados</h2>
+      <p>Una muestra de los trabajos realizados por nuestro equipo de especialistas.</p>
+    </div>
+    <div class="carrusel-wrap">
+      <div class="carrusel-track" id="carruselTrack">
+        <!-- Slides cargados dinámicamente desde main.js -->
+      </div>
+      <button class="carrusel-btn prev" id="carruselPrev"><i class="fa-solid fa-chevron-left"></i></button>
+      <button class="carrusel-btn next" id="carruselNext"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+    <div class="carrusel-puntos" id="carruselPuntos"></div>
+  </div>
+</section>
+
+<!-- ===== SOBRE NOSOTROS ===== -->
+<section class="sobre-nosotros" id="nosotros">
+  <div class="contenedor grid-sobre">
+    <div class="sobre-img">
+      <img src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=700&q=80" alt="Equipo Glow Beauty Studio">
+      <div class="tarjeta-flotante">
+        <strong>8+</strong>
+        Años transformando belleza
+      </div>
+    </div>
+    <div class="sobre-texto">
+      <span class="etiqueta">Sobre nosotros</span>
+      <h2>Pasión por hacerte ver y sentir increíble</h2>
+      <p>En <strong>Glow Beauty Studio</strong> creemos que la belleza es una forma de cuidarte. Desde 2017 ofrecemos servicios profesionales de cabello, uñas, maquillaje y spa, combinando técnicas modernas con productos de alta calidad.</p>
+      <p>Nuestro equipo de especialistas certificados trabaja contigo para lograr el resultado que imaginas, en un ambiente cómodo, limpio y profesional.</p>
+      <ul class="lista-valores">
+        <li><i class="fa-solid fa-check"></i> Productos profesionales</li>
+        <li><i class="fa-solid fa-check"></i> Personal certificado</li>
+        <li><i class="fa-solid fa-check"></i> Ambiente higiénico</li>
+        <li><i class="fa-solid fa-check"></i> Atención personalizada</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== RESERVAS ===== -->
+<section class="reservas" id="reservas">
+  <div class="contenedor grid-reserva">
+    <div class="reservas-info">
+      <div class="titulo-seccion">
+        <span class="etiqueta">Reserva tu cita</span>
+        <h2>Agenda en línea, fácil y rápido</h2>
+        <p>Completa el formulario y nuestro equipo confirmará tu cita por WhatsApp o llamada.</p>
+      </div>
+      <ul class="lista-pasos">
+        <li>
+          <div class="numero">1</div>
+          <div><h4>Elige tu servicio</h4><p>Selecciona el tratamiento que deseas realizarte.</p></div>
+        </li>
+        <li>
+          <div class="numero">2</div>
+          <div><h4>Escoge fecha y hora</h4><p>Selecciona el día y horario que más te convenga.</p></div>
+        </li>
+        <li>
+          <div class="numero">3</div>
+          <div><h4>Confirmación</h4><p>Te contactaremos para confirmar tu reserva.</p></div>
+        </li>
+      </ul>
+      <a href="https://wa.me/59100000000?text=Hola%2C%20quiero%20reservar%20una%20cita" target="_blank" class="btn btn-whatsapp">
+        <i class="fa-brands fa-whatsapp"></i> Prefiero reservar por WhatsApp
+      </a>
+    </div>
+
+    <form class="form-reserva" id="formReserva">
+      <div class="campo">
+        <label for="nombre">Nombre completo *</label>
+        <input type="text" id="nombre" name="nombre" placeholder="Ej: María Pérez" required>
+      </div>
+      <div class="fila-doble">
+        <div class="campo">
+          <label for="telefono">Teléfono / WhatsApp *</label>
+          <input type="tel" id="telefono" name="telefono" placeholder="Ej: 70000000" required>
+        </div>
+        <div class="campo">
+          <label for="servicio">Servicio *</label>
+          <select id="servicio" name="servicio" required>
+            <option value="">Selecciona un servicio</option>
+          </select>
+        </div>
+      </div>
+      <div class="fila-doble">
+        <div class="campo">
+          <label for="fecha">Fecha *</label>
+          <input type="date" id="fecha" name="fecha" required>
+        </div>
+        <div class="campo">
+          <label for="hora">Hora *</label>
+          <input type="time" id="hora" name="hora" required>
+        </div>
+      </div>
+      <div class="campo">
+        <label for="comentario">Comentario (opcional)</label>
+        <textarea id="comentario" name="comentario" rows="3" placeholder="Cuéntanos algo más sobre tu cita..."></textarea>
+      </div>
+      <button type="submit" class="btn btn-primario">Confirmar reserva</button>
+      <p class="mensaje-form" id="mensajeForm"></p>
+    </form>
+  </div>
+</section>
+
+<!-- ===== UBICACION (morado/negro) ===== -->
+<section class="ubicacion" id="ubicacion">
+  <div class="contenedor grid-ubicacion">
+    <div>
+      <div class="titulo-seccion">
+        <span class="etiqueta">Visítanos</span>
+        <h2>Nuestra ubicación</h2>
+      </div>
+      <ul class="lista-ubicacion">
+        <li>
+          <div class="icono"><i class="fa-solid fa-location-dot"></i></div>
+          <div><strong>Dirección</strong><span>Av. Principal #123, Zona Central, La Paz, Bolivia</span></div>
+        </li>
+        <li>
+          <div class="icono"><i class="fa-regular fa-clock"></i></div>
+          <div><strong>Horario de atención</strong><span>Lunes a sábado: 9:00 - 19:00 hrs</span></div>
+        </li>
+        <li>
+          <div class="icono"><i class="fa-solid fa-phone"></i></div>
+          <div><strong>Teléfono / WhatsApp</strong><span>+591 700 00 000</span></div>
+        </li>
+        <li>
+          <div class="icono"><i class="fa-solid fa-car"></i></div>
+          <div><strong>Estacionamiento</strong><span>Contamos con parqueo propio para clientas</span></div>
+        </li>
+      </ul>
+      <a href="https://wa.me/59100000000" target="_blank" class="btn btn-primario"><i class="fa-brands fa-whatsapp"></i> Cómo llegar por WhatsApp</a>
+    </div>
+    <div class="mapa-wrap">
+      <iframe src="https://maps.google.com/maps?q=La%20Paz%2C%20Bolivia&z=15&output=embed" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACTO ===== -->
+<section class="contacto" id="contacto">
+  <div class="contenedor">
+    <div class="titulo-seccion">
+      <span class="etiqueta">Contáctanos</span>
+      <h2>Hablemos de tu próxima cita</h2>
+      <p>Elige el medio que prefieras, estamos disponibles para atenderte.</p>
+    </div>
+    <div class="grid-contacto">
+      <div class="tarjeta-contacto">
+        <div class="icono"><i class="fa-brands fa-whatsapp"></i></div>
+        <h3>WhatsApp</h3>
+        <p>Respuesta inmediata para reservas y consultas.</p>
+        <a href="https://wa.me/59100000000" target="_blank" class="btn btn-whatsapp">Escribir ahora</a>
+      </div>
+      <div class="tarjeta-contacto">
+        <div class="icono"><i class="fa-solid fa-envelope"></i></div>
+        <h3>Correo electrónico</h3>
+        <p>contacto@glowbeautystudio.com</p>
+        <a href="mailto:contacto@glowbeautystudio.com" class="btn btn-primario">Enviar correo</a>
+      </div>
+      <div class="tarjeta-contacto">
+        <div class="icono"><i class="fa-solid fa-phone"></i></div>
+        <h3>Llámanos</h3>
+        <p>+591 700 00 000</p>
+        <a href="tel:+59170000000" class="btn btn-primario">Llamar ahora</a>
+      </div>
+    </div>
+    <div class="redes-sociales">
+      <a href="https://instagram.com" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+      <a href="https://tiktok.com" target="_blank" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+      <a href="https://wa.me/59100000000" target="_blank" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHATSAPP FLOTANTE ===== -->
+<a href="https://wa.me/59100000000?text=Hola%2C%20quiero%20más%20información" target="_blank" class="whatsapp-flotante" aria-label="Escríbenos por WhatsApp">
+  <i class="fa-brands fa-whatsapp"></i>
+</a>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="contenedor grid-footer">
+    <div>
+      <a href="#inicio" class="logo">Glow<span>Beauty</span></a>
+      <p>Salón de belleza profesional dedicado a realzar tu belleza natural con técnicas modernas y un trato cálido y personalizado.</p>
+    </div>
+    <div>
+      <h4>Navegación</h4>
+      <ul>
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#galeria">Galería</a></li>
+        <li><a href="#nosotros">Nosotros</a></li>
+        <li><a href="#ubicacion">Ubicación</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Servicios</h4>
+      <ul>
+        <li><a href="#servicios">Cabello</a></li>
+        <li><a href="#servicios">Uñas</a></li>
+        <li><a href="#servicios">Maquillaje</a></li>
+        <li><a href="#servicios">Spa</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contacto</h4>
+      <ul>
+        <li><i class="fa-solid fa-location-dot"></i> Av. Principal #123, La Paz</li>
+        <li><i class="fa-solid fa-phone"></i> +591 700 00 000</li>
+        <li><i class="fa-solid fa-envelope"></i> contacto@glowbeautystudio.com</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 Glow Beauty Studio. Todos los derechos reservados. · <a href="/admin">Acceso administrador</a>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
