@@ -6,7 +6,10 @@
     "descripcion": "Corte personalizado según la forma de tu rostro y estilo de vida, incluye lavado y peinado final.",
     "precio": 80,
     "duracion": "45 min",
-    "imagen": "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=600&q=80"
+    "imagen": "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=600&q=80",
+    "activo": true,
+    "disponibleDesde": "",
+    "nota": ""
   },
   {
     "id": "srv-002",
@@ -15,7 +18,10 @@
     "descripcion": "Color, balayage o mechas con productos profesionales que cuidan la fibra capilar.",
     "precio": 250,
     "duracion": "2 h 30 min",
-    "imagen": "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=600&q=80"
+    "imagen": "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=600&q=80",
+    "activo": true,
+    "disponibleDesde": "",
+    "nota": ""
   },
   {
     "id": "srv-003",
@@ -24,7 +30,10 @@
     "descripcion": "Esmaltado semipermanente, spa de manos y pies con exfoliación e hidratación profunda.",
     "precio": 90,
     "duracion": "1 h",
-    "imagen": "https://images.unsplash.com/photo-1610992015734-5a3c66d97a05?auto=format&fit=crop&w=600&q=80"
+    "imagen": "https://images.unsplash.com/photo-1610992015734-5a3c66d97a05?auto=format&fit=crop&w=600&q=80",
+    "activo": true,
+    "disponibleDesde": "",
+    "nota": ""
   },
   {
     "id": "srv-004",
@@ -33,7 +42,10 @@
     "descripcion": "Maquillaje social o de novia, larga duración, incluye prueba previa bajo cita.",
     "precio": 180,
     "duracion": "1 h 15 min",
-    "imagen": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=600&q=80"
+    "imagen": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=600&q=80",
+    "activo": true,
+    "disponibleDesde": "",
+    "nota": ""
   },
   {
     "id": "srv-005",
@@ -42,7 +54,10 @@
     "descripcion": "Limpieza profunda, hidratación y masaje facial relajante para todo tipo de piel.",
     "precio": 150,
     "duracion": "50 min",
-    "imagen": "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=600&q=80"
+    "imagen": "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=600&q=80",
+    "activo": true,
+    "disponibleDesde": "",
+    "nota": ""
   },
   {
     "id": "srv-006",
@@ -51,7 +66,10 @@
     "descripcion": "Diseño de cejas con henna, laminado y extensión de pestañas pelo a pelo.",
     "precio": 120,
     "duracion": "1 h",
-    "imagen": "https://images.unsplash.com/photo-1605497788044-5a32c7078486?auto=format&fit=crop&w=600&q=80"
+    "imagen": "https://images.unsplash.com/photo-1605497788044-5a32c7078486?auto=format&fit=crop&w=600&q=80",
+    "activo": true,
+    "disponibleDesde": "",
+    "nota": ""
   },
   {
     "id": "srv-007",
@@ -60,7 +78,10 @@
     "descripcion": "Recogidos, ondas y peinados de fiesta para bodas, graduaciones y eventos especiales.",
     "precio": 140,
     "duracion": "1 h",
-    "imagen": "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=600&q=80"
+    "imagen": "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=600&q=80",
+    "activo": true,
+    "disponibleDesde": "",
+    "nota": ""
   },
   {
     "id": "srv-008",
@@ -69,6 +90,9 @@
     "descripcion": "Masaje corporal relajante con aceites esenciales para liberar el estrés del día.",
     "precio": 200,
     "duracion": "1 h 20 min",
-    "imagen": "https://images.unsplash.com/photo-1519415510236-718bdfcd89c1?auto=format&fit=crop&w=600&q=80"
+    "imagen": "https://images.unsplash.com/photo-1519415510236-718bdfcd89c1?auto=format&fit=crop&w=600&q=80",
+    "activo": true,
+    "disponibleDesde": "",
+    "nota": ""
   }
 ]

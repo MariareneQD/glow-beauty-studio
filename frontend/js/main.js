@@ -3,6 +3,13 @@
 // =======================================================
 const API_BASE = "/api";
 
+// Convierte cualquier número a formato wa.me (agrega código de Bolivia 591 si falta)
+function formatearNumeroWhatsapp(numero) {
+  let limpio = String(numero || "").replace(/\D/g, "");
+  if (limpio.length === 8) limpio = "591" + limpio; // número local boliviano
+  return limpio;
+}
+
 // ---------- Menú móvil ----------
 const menuToggle = document.getElementById("menuToggle");
 const navLinks = document.querySelector(".nav-links");
@@ -19,6 +26,38 @@ if (menuToggle) {
   });
 }
 
+// ---------- Cargar CONFIGURACIÓN GENERAL (whatsapp, dirección, horario, redes) ----------
+async function cargarConfiguracion() {
+  try {
+    const res = await fetch(`${API_BASE}/settings`);
+    const cfg = await res.json();
+    const numero = formatearNumeroWhatsapp(cfg.whatsapp);
+
+    // Todos los enlaces de WhatsApp del sitio
+    document.querySelectorAll(".wa-link").forEach((el) => {
+      const url = new URL(el.getAttribute("href"), window.location.origin);
+      const textoParam = url.search ? url.search.replace("?text=", "") : "";
+      el.setAttribute("href", `https://wa.me/${numero}${textoParam ? "?text=" + textoParam : ""}`);
+    });
+
+    if (document.getElementById("direccionTexto")) document.getElementById("direccionTexto").textContent = cfg.direccion;
+    if (document.getElementById("direccionFooter")) document.getElementById("direccionFooter").textContent = cfg.direccion;
+    if (document.getElementById("horarioTexto")) document.getElementById("horarioTexto").textContent = cfg.horario;
+    if (document.getElementById("telefonoTexto1")) document.getElementById("telefonoTexto1").textContent = cfg.telefonoFijo;
+    if (document.getElementById("telefonoTexto2")) document.getElementById("telefonoTexto2").textContent = cfg.telefonoFijo;
+    if (document.getElementById("telefonoFooter")) document.getElementById("telefonoFooter").textContent = cfg.telefonoFijo;
+    if (document.getElementById("correoTexto1")) document.getElementById("correoTexto1").textContent = cfg.correo;
+    if (document.getElementById("correoFooter")) document.getElementById("correoFooter").textContent = cfg.correo;
+    if (document.getElementById("correoLink")) document.getElementById("correoLink").setAttribute("href", "mailto:" + cfg.correo);
+    if (document.getElementById("mapaIframe") && cfg.mapaUrl) document.getElementById("mapaIframe").src = cfg.mapaUrl;
+    if (document.getElementById("redInstagram")) document.getElementById("redInstagram").setAttribute("href", cfg.instagram);
+    if (document.getElementById("redFacebook")) document.getElementById("redFacebook").setAttribute("href", cfg.facebook);
+    if (document.getElementById("redTiktok")) document.getElementById("redTiktok").setAttribute("href", cfg.tiktok);
+  } catch (err) {
+    console.error("Error cargando configuración:", err);
+  }
+}
+
 // ---------- Cargar SERVICIOS desde el backend ----------
 async function cargarServicios() {
   try {
@@ -29,8 +68,30 @@ async function cargarServicios() {
     const selectServicio = document.getElementById("servicio");
 
     grid.innerHTML = servicios
-      .map(
-        (s) => `
+      .map((s) => {
+        if (s.activo === false) {
+          const fechaTexto = s.disponibleDesde
+            ? `Disponible desde el ${formatearFecha(s.disponibleDesde)}`
+            : "Próximamente disponible";
+          return `
+          <div class="tarjeta-servicio inactivo">
+            <div class="img-servicio">
+              <img src="${s.imagen}" alt="${s.nombre}" loading="lazy">
+              <div class="cinta-no-disponible">No disponible</div>
+            </div>
+            <div class="info-servicio">
+              <span class="categoria">${s.categoria}</span>
+              <h3>${s.nombre}</h3>
+              <p>${s.descripcion}</p>
+              <div class="aviso-no-disponible">
+                <i class="fa-regular fa-clock"></i> ${fechaTexto}
+                ${s.nota ? `<br><span class="nota-servicio">${s.nota}</span>` : ""}
+              </div>
+              <button class="btn-reservar-mini deshabilitado" disabled>No disponible por el momento</button>
+            </div>
+          </div>`;
+        }
+        return `
       <div class="tarjeta-servicio">
         <div class="img-servicio"><img src="${s.imagen}" alt="${s.nombre}" loading="lazy"></div>
         <div class="info-servicio">
@@ -43,14 +104,17 @@ async function cargarServicios() {
           </div>
           <button class="btn-reservar-mini" data-servicio="${s.nombre}">Reservar este servicio</button>
         </div>
-      </div>`
-      )
+      </div>`;
+      })
       .join("");
+
+    // Solo los servicios activos van al <select> del formulario de reservas
+    const serviciosActivos = servicios.filter((s) => s.activo !== false);
 
     // Llenar el <select> del formulario de reservas
     selectServicio.innerHTML =
       `<option value="">Selecciona un servicio</option>` +
-      servicios.map((s) => `<option value="${s.nombre}">${s.nombre} - Bs ${s.precio}</option>`).join("");
+      serviciosActivos.map((s) => `<option value="${s.nombre}">${s.nombre} - Bs ${s.precio}</option>`).join("");
 
     // Botones "Reservar este servicio" -> saltan al formulario y preseleccionan
     document.querySelectorAll(".btn-reservar-mini").forEach((btn) => {
@@ -163,6 +227,18 @@ if (inputFecha) {
   inputFecha.setAttribute("min", hoy);
 }
 
+function formatearFecha(valor) {
+  try {
+    const fecha = new Date(valor);
+    if (isNaN(fecha.getTime())) return valor;
+    return fecha.toLocaleDateString("es-BO", { day: "numeric", month: "long", year: "numeric" }) +
+      (valor.includes("T") ? " a las " + fecha.toLocaleTimeString("es-BO", { hour: "2-digit", minute: "2-digit" }) : "");
+  } catch {
+    return valor;
+  }
+}
+
 // ---------- Inicialización ----------
+cargarConfiguracion();
 cargarServicios();
 cargarGaleria();

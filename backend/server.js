@@ -6,6 +6,7 @@ const authRoutes = require("./routes/auth");
 const servicesRoutes = require("./routes/services");
 const galleryRoutes = require("./routes/gallery");
 const bookingsRoutes = require("./routes/bookings");
+const settingsRoutes = require("./routes/settings");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,6 +19,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/services", servicesRoutes);
 app.use("/api/gallery", galleryRoutes);
 app.use("/api/bookings", bookingsRoutes);
+app.use("/api/settings", settingsRoutes);
 
 // ---- Frontend estático (sitio público + panel admin) ----
 const FRONTEND_DIR = path.join(__dirname, "..", "frontend");
