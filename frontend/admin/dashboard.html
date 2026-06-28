@@ -17,9 +17,10 @@
     <div class="marca">Glow<span>Beauty</span></div>
     <nav>
       <button class="item-menu activo" data-panel="panelResumen"><i class="fa-solid fa-chart-pie"></i> Resumen</button>
-      <button class="item-menu" data-panel="panelReservas"><i class="fa-regular fa-calendar-check"></i> Reservas</button>
+      <button class="item-menu" data-panel="panelReservas"><i class="fa-regular fa-calendar-check"></i> Reservas <span class="badge-menu" id="badgePendientes" style="display:none;">0</span></button>
       <button class="item-menu" data-panel="panelServicios"><i class="fa-solid fa-spa"></i> Servicios</button>
       <button class="item-menu" data-panel="panelGaleria"><i class="fa-regular fa-images"></i> Galería</button>
+      <button class="item-menu" data-panel="panelConfiguracion"><i class="fa-solid fa-gear"></i> Configuración</button>
     </nav>
     <button class="cerrar-sesion" id="btnCerrarSesion"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</button>
   </aside>
@@ -87,6 +88,7 @@
               <option value="confirmada">Confirmadas</option>
               <option value="cancelada">Canceladas</option>
             </select>
+            <button class="btn-admin secundario" id="btnExportarCsv"><i class="fa-solid fa-file-arrow-down"></i> Exportar CSV</button>
           </div>
         </div>
         <div class="tabla-wrap">
@@ -124,6 +126,46 @@
       </div>
     </section>
 
+    <!-- ---- CONFIGURACIÓN ---- -->
+    <section class="panel-seccion" id="panelConfiguracion">
+      <div class="bloque">
+        <div class="bloque-header"><h2>Datos de contacto y negocio</h2></div>
+        <form id="formConfiguracion">
+          <div class="fila-config">
+            <div class="campo-login"><label>Nombre del negocio</label><div class="input-wrap"><input type="text" id="cfgNombre" required></div></div>
+            <div class="campo-login"><label>Número de WhatsApp (con código de país, ej: 59170000000)</label><div class="input-wrap"><input type="text" id="cfgWhatsapp" required></div></div>
+          </div>
+          <div class="fila-config">
+            <div class="campo-login"><label>Teléfono fijo a mostrar</label><div class="input-wrap"><input type="text" id="cfgTelefonoFijo"></div></div>
+            <div class="campo-login"><label>Correo electrónico</label><div class="input-wrap"><input type="email" id="cfgCorreo"></div></div>
+          </div>
+          <div class="campo-login"><label>Dirección</label><div class="input-wrap"><input type="text" id="cfgDireccion"></div></div>
+          <div class="campo-login"><label>Horario de atención</label><div class="input-wrap"><input type="text" id="cfgHorario"></div></div>
+          <div class="campo-login"><label>URL del mapa embebido (Google Maps)</label><div class="input-wrap"><input type="text" id="cfgMapaUrl"></div></div>
+          <div class="fila-config">
+            <div class="campo-login"><label>Instagram (URL)</label><div class="input-wrap"><input type="text" id="cfgInstagram"></div></div>
+            <div class="campo-login"><label>Facebook (URL)</label><div class="input-wrap"><input type="text" id="cfgFacebook"></div></div>
+            <div class="campo-login"><label>TikTok (URL)</label><div class="input-wrap"><input type="text" id="cfgTiktok"></div></div>
+          </div>
+          <button type="submit" class="btn-admin primario"><i class="fa-solid fa-floppy-disk"></i> Guardar cambios</button>
+          <p class="mensaje-config" id="mensajeConfig"></p>
+        </form>
+      </div>
+
+      <div class="bloque">
+        <div class="bloque-header"><h2>Seguridad de la cuenta</h2></div>
+        <form id="formPassword">
+          <div class="fila-config">
+            <div class="campo-login"><label>Usuario (opcional, déjalo igual si no quieres cambiarlo)</label><div class="input-wrap"><input type="text" id="pwdUsuario"></div></div>
+            <div class="campo-login"><label>Contraseña actual</label><div class="input-wrap"><input type="password" id="pwdActual" required></div></div>
+          </div>
+          <div class="campo-login"><label>Nueva contraseña</label><div class="input-wrap"><input type="password" id="pwdNueva" required minlength="4"></div></div>
+          <button type="submit" class="btn-admin primario"><i class="fa-solid fa-lock"></i> Cambiar contraseña</button>
+          <p class="mensaje-config" id="mensajePassword"></p>
+        </form>
+      </div>
+    </section>
+
   </main>
 </div>
 
@@ -140,6 +182,32 @@
       <div class="campo-login"><label>Precio (Bs)</label><div class="input-wrap"><input type="number" id="servicioPrecio" required></div></div>
       <div class="campo-login"><label>Duración</label><div class="input-wrap"><input type="text" id="servicioDuracion" placeholder="Ej: 45 min" required></div></div>
       <div class="campo-login"><label>URL de imagen</label><div class="input-wrap"><input type="url" id="servicioImagen" placeholder="https://..." required></div></div>
+
+      <div class="bloque-disponibilidad">
+        <div class="bloque-disponibilidad-header">
+          <div>
+            <strong>Disponibilidad del servicio</strong>
+            <span class="estado-actual-texto" id="estadoActualTexto">Activo — visible para reservar</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="servicioActivo" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div id="bloqueInactivo" style="display:none;">
+          <div class="campo-login">
+            <label>¿Cuándo vuelve a estar disponible? (opcional)</label>
+            <div class="input-wrap"><input type="datetime-local" id="servicioDisponibleDesde"></div>
+          </div>
+          <div class="campo-login">
+            <label>Nota para el cliente (opcional)</label>
+            <div class="input-wrap"><input type="text" id="servicioNota" placeholder="Ej: En mantenimiento, vuelve la próxima semana"></div>
+          </div>
+          <p class="resumen-tiempo-restante" id="resumenTiempoRestante"></p>
+        </div>
+      </div>
+
       <div class="modal-botones">
         <button type="button" class="btn-admin secundario" data-cerrar="modalServicio">Cancelar</button>
         <button type="submit" class="btn-admin primario">Guardar</button>
@@ -152,13 +220,22 @@
 <div class="modal-overlay" id="modalGaleria">
   <div class="modal-box" style="position:relative;">
     <button class="cerrar-modal" data-cerrar="modalGaleria"><i class="fa-solid fa-xmark"></i></button>
-    <h3>Agregar imagen a la galería</h3>
+    <h3 id="tituloModalGaleria">Agregar imagen a la galería</h3>
     <form id="formGaleria">
-      <div class="campo-login"><label>URL de la imagen</label><div class="input-wrap"><input type="url" id="galeriaUrl" placeholder="https://..." required></div></div>
+      <input type="hidden" id="galeriaId">
+      <div class="campo-login">
+        <label>URL de la imagen</label>
+        <div class="input-wrap"><input type="url" id="galeriaUrl" placeholder="https://..." required></div>
+        <small class="ayuda-campo">Debe ser un enlace <strong>directo</strong> a la imagen (termina en .jpg, .png, .webp, etc). Si la copiaste de Google Imágenes, debes hacer clic derecho sobre la imagen → "Copiar dirección de la imagen", no el enlace de la página.</small>
+        <div class="preview-imagen-wrap" id="previewWrap" style="display:none;">
+          <img id="previewImagen" alt="Vista previa">
+          <span id="previewError" style="display:none;color:var(--peligro);font-size:.8rem;">⚠ No se pudo cargar esta imagen. Revisa que el enlace sea directo a la imagen.</span>
+        </div>
+      </div>
       <div class="campo-login"><label>Título / descripción</label><div class="input-wrap"><input type="text" id="galeriaTitulo" placeholder="Ej: Coloración balayage" required></div></div>
       <div class="modal-botones">
         <button type="button" class="btn-admin secundario" data-cerrar="modalGaleria">Cancelar</button>
-        <button type="submit" class="btn-admin primario">Agregar</button>
+        <button type="submit" class="btn-admin primario" id="btnGuardarGaleria">Agregar</button>
       </div>
     </form>
   </div>

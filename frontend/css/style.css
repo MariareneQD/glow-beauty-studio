@@ -234,6 +234,36 @@ h1,h2,h3{font-family:var(--fuente-titulo);}
   cursor:pointer;
 }
 .info-servicio .btn-reservar-mini:hover{background:var(--morado-700);}
+.info-servicio .btn-reservar-mini.deshabilitado{
+  background:#cfc8d6;
+  color:#6b6b76;
+  cursor:not-allowed;
+}
+.info-servicio .btn-reservar-mini.deshabilitado:hover{background:#cfc8d6;}
+.tarjeta-servicio.inactivo{opacity:.92;}
+.tarjeta-servicio.inactivo .img-servicio{position:relative;}
+.tarjeta-servicio.inactivo .img-servicio img{filter:grayscale(.45);}
+.cinta-no-disponible{
+  position:absolute;
+  top:14px;left:-6px;
+  background:var(--negro-suave);
+  color:#fff;
+  font-size:.72rem;
+  font-weight:700;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  padding:6px 18px;
+  box-shadow:0 4px 10px rgba(0,0,0,.25);
+}
+.aviso-no-disponible{
+  background:var(--morado-100);
+  color:var(--morado-700);
+  font-size:.82rem;
+  padding:10px 12px;
+  border-radius:8px;
+  margin-bottom:14px;
+}
+.aviso-no-disponible .nota-servicio{color:var(--gris);font-size:.78rem;}
 
 /* ---------- Galeria / carrusel ---------- */
 .galeria{padding:100px 0;background:#fff;}

@@ -40,7 +40,7 @@
       <p>Cabello, uñas, maquillaje, cejas y spa en un solo lugar. Vive una experiencia de belleza profesional, cómoda y personalizada para ti.</p>
       <div class="hero-botones">
         <a href="#reservas" class="btn btn-primario"><i class="fa-regular fa-calendar-check"></i> Reservar ahora</a>
-        <a href="https://wa.me/59100000000?text=Hola%2C%20quiero%20reservar%20una%20cita" target="_blank" class="btn btn-secundario"><i class="fa-brands fa-whatsapp"></i> Escríbenos</a>
+        <a href="https://wa.me/59100000000?text=Hola%2C%20quiero%20reservar%20una%20cita" target="_blank" class="btn btn-secundario wa-link" id="waHero"><i class="fa-brands fa-whatsapp"></i> Escríbenos</a>
       </div>
       <div class="hero-stats">
         <div><strong>8+</strong><span>Años de experiencia</span></div>
@@ -132,7 +132,7 @@
           <div><h4>Confirmación</h4><p>Te contactaremos para confirmar tu reserva.</p></div>
         </li>
       </ul>
-      <a href="https://wa.me/59100000000?text=Hola%2C%20quiero%20reservar%20una%20cita" target="_blank" class="btn btn-whatsapp">
+      <a href="https://wa.me/59100000000?text=Hola%2C%20quiero%20reservar%20una%20cita" target="_blank" class="btn btn-whatsapp wa-link" id="waReservas">
         <i class="fa-brands fa-whatsapp"></i> Prefiero reservar por WhatsApp
       </a>
     </div>
@@ -185,25 +185,25 @@
       <ul class="lista-ubicacion">
         <li>
           <div class="icono"><i class="fa-solid fa-location-dot"></i></div>
-          <div><strong>Dirección</strong><span>Av. Principal #123, Zona Central, La Paz, Bolivia</span></div>
+          <div><strong>Dirección</strong><span id="direccionTexto">Av. Principal #123, Zona Central, La Paz, Bolivia</span></div>
         </li>
         <li>
           <div class="icono"><i class="fa-regular fa-clock"></i></div>
-          <div><strong>Horario de atención</strong><span>Lunes a sábado: 9:00 - 19:00 hrs</span></div>
+          <div><strong>Horario de atención</strong><span id="horarioTexto">Lunes a sábado: 9:00 - 19:00 hrs</span></div>
         </li>
         <li>
           <div class="icono"><i class="fa-solid fa-phone"></i></div>
-          <div><strong>Teléfono / WhatsApp</strong><span>+591 700 00 000</span></div>
+          <div><strong>Teléfono / WhatsApp</strong><span id="telefonoTexto1">+591 700 00 000</span></div>
         </li>
         <li>
           <div class="icono"><i class="fa-solid fa-car"></i></div>
           <div><strong>Estacionamiento</strong><span>Contamos con parqueo propio para clientas</span></div>
         </li>
       </ul>
-      <a href="https://wa.me/59100000000" target="_blank" class="btn btn-primario"><i class="fa-brands fa-whatsapp"></i> Cómo llegar por WhatsApp</a>
+      <a href="https://wa.me/59100000000" target="_blank" class="btn btn-primario wa-link" id="waUbicacion"><i class="fa-brands fa-whatsapp"></i> Cómo llegar por WhatsApp</a>
     </div>
     <div class="mapa-wrap">
-      <iframe src="https://maps.google.com/maps?q=La%20Paz%2C%20Bolivia&z=15&output=embed" allowfullscreen="" loading="lazy"></iframe>
+      <iframe id="mapaIframe" src="https://maps.google.com/maps?q=La%20Paz%2C%20Bolivia&z=15&output=embed" allowfullscreen="" loading="lazy"></iframe>
     </div>
   </div>
 </section>
@@ -221,32 +221,32 @@
         <div class="icono"><i class="fa-brands fa-whatsapp"></i></div>
         <h3>WhatsApp</h3>
         <p>Respuesta inmediata para reservas y consultas.</p>
-        <a href="https://wa.me/59100000000" target="_blank" class="btn btn-whatsapp">Escribir ahora</a>
+        <a href="https://wa.me/59100000000" target="_blank" class="btn btn-whatsapp wa-link" id="waContacto">Escribir ahora</a>
       </div>
       <div class="tarjeta-contacto">
         <div class="icono"><i class="fa-solid fa-envelope"></i></div>
         <h3>Correo electrónico</h3>
-        <p>contacto@glowbeautystudio.com</p>
-        <a href="mailto:contacto@glowbeautystudio.com" class="btn btn-primario">Enviar correo</a>
+        <p id="correoTexto1">contacto@glowbeautystudio.com</p>
+        <a href="mailto:contacto@glowbeautystudio.com" class="btn btn-primario" id="correoLink">Enviar correo</a>
       </div>
       <div class="tarjeta-contacto">
         <div class="icono"><i class="fa-solid fa-phone"></i></div>
         <h3>Llámanos</h3>
-        <p>+591 700 00 000</p>
+        <p id="telefonoTexto2">+591 700 00 000</p>
         <a href="tel:+59170000000" class="btn btn-primario">Llamar ahora</a>
       </div>
     </div>
     <div class="redes-sociales">
-      <a href="https://instagram.com" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-      <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-      <a href="https://tiktok.com" target="_blank" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
-      <a href="https://wa.me/59100000000" target="_blank" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+      <a href="https://instagram.com" target="_blank" aria-label="Instagram" id="redInstagram"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://facebook.com" target="_blank" aria-label="Facebook" id="redFacebook"><i class="fa-brands fa-facebook-f"></i></a>
+      <a href="https://tiktok.com" target="_blank" aria-label="TikTok" id="redTiktok"><i class="fa-brands fa-tiktok"></i></a>
+      <a href="https://wa.me/59100000000" target="_blank" aria-label="WhatsApp" class="wa-link" id="waContactoIcono"><i class="fa-brands fa-whatsapp"></i></a>
     </div>
   </div>
 </section>
 
 <!-- ===== WHATSAPP FLOTANTE ===== -->
-<a href="https://wa.me/59100000000?text=Hola%2C%20quiero%20más%20información" target="_blank" class="whatsapp-flotante" aria-label="Escríbenos por WhatsApp">
+<a href="https://wa.me/59100000000?text=Hola%2C%20quiero%20más%20información" target="_blank" class="whatsapp-flotante wa-link" id="waFlotante" aria-label="Escríbenos por WhatsApp">
   <i class="fa-brands fa-whatsapp"></i>
 </a>
 
@@ -278,9 +278,9 @@
     <div>
       <h4>Contacto</h4>
       <ul>
-        <li><i class="fa-solid fa-location-dot"></i> Av. Principal #123, La Paz</li>
-        <li><i class="fa-solid fa-phone"></i> +591 700 00 000</li>
-        <li><i class="fa-solid fa-envelope"></i> contacto@glowbeautystudio.com</li>
+        <li><i class="fa-solid fa-location-dot"></i> <span id="direccionFooter">Av. Principal #123, La Paz</span></li>
+        <li><i class="fa-solid fa-phone"></i> <span id="telefonoFooter">+591 700 00 000</span></li>
+        <li><i class="fa-solid fa-envelope"></i> <span id="correoFooter">contacto@glowbeautystudio.com</span></li>
       </ul>
     </div>
   </div>

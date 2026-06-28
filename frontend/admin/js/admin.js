@@ -68,7 +68,15 @@ if (sidebar) {
     panelReservas: "Gestión de reservas",
     panelServicios: "Gestión de servicios",
     panelGaleria: "Galería de trabajos",
+    panelConfiguracion: "Configuración general",
   };
+
+  // Formatea cualquier número a formato wa.me (agrega código de Bolivia 591 si es un número local de 8 dígitos)
+  function formatearNumeroWhatsapp(numero) {
+    let limpio = String(numero || "").replace(/\D/g, "");
+    if (limpio.length === 8) limpio = "591" + limpio;
+    return limpio;
+  }
 
   function mostrarPanel(idPanel) {
     document.querySelectorAll(".panel-seccion").forEach((p) => p.classList.remove("activo"));
@@ -103,7 +111,16 @@ if (sidebar) {
 
   function renderResumen() {
     document.getElementById("totalReservas").textContent = reservasCache.length;
-    document.getElementById("totalPendientes").textContent = reservasCache.filter((r) => r.estado === "pendiente").length;
+    const pendientes = reservasCache.filter((r) => r.estado === "pendiente").length;
+    document.getElementById("totalPendientes").textContent = pendientes;
+
+    const badge = document.getElementById("badgePendientes");
+    if (pendientes > 0) {
+      badge.textContent = pendientes;
+      badge.style.display = "inline-block";
+    } else {
+      badge.style.display = "none";
+    }
 
     const tbody = document.getElementById("tablaResumenReservas");
     tbody.innerHTML = reservasCache
@@ -126,10 +143,18 @@ if (sidebar) {
     const tbody = document.getElementById("tablaReservas");
     tbody.innerHTML =
       datos
-        .map(
-          (r) => `<tr>
+        .map((r) => {
+          const numero = formatearNumeroWhatsapp(r.telefono);
+          const mensaje = encodeURIComponent(
+            `Hola ${r.nombre}, te escribimos de Glow Beauty Studio sobre tu reserva de "${r.servicio}" para el ${r.fecha} a las ${r.hora}.`
+          );
+          return `<tr>
         <td>${r.nombre}</td>
-        <td><a href="https://wa.me/${r.telefono.replace(/\D/g, "")}" target="_blank">${r.telefono}</a></td>
+        <td>
+          <a href="https://wa.me/${numero}?text=${mensaje}" target="_blank" class="btn-whatsapp-fila">
+            <i class="fa-brands fa-whatsapp"></i> ${r.telefono}
+          </a>
+        </td>
         <td>${r.servicio}</td>
         <td>${r.fecha}</td>
         <td>${r.hora}</td>
@@ -139,8 +164,8 @@ if (sidebar) {
           ${r.estado !== "cancelada" ? `<button class="btn-admin peligro peq" data-accion="cancelar" data-id="${r.id}"><i class="fa-solid fa-ban"></i></button>` : ""}
           <button class="btn-admin secundario peq" data-accion="eliminar" data-id="${r.id}"><i class="fa-solid fa-trash"></i></button>
         </td>
-      </tr>`
-        )
+      </tr>`;
+        })
         .join("") || `<tr><td colspan="7" style="color:var(--texto-sec)">No hay reservas con este filtro.</td></tr>`;
 
     tbody.querySelectorAll("button").forEach((btn) => {
@@ -162,6 +187,25 @@ if (sidebar) {
 
   document.getElementById("filtroEstado").addEventListener("change", renderTablaReservas);
 
+  document.getElementById("btnExportarCsv").addEventListener("click", () => {
+    if (reservasCache.length === 0) return alert("No hay reservas para exportar.");
+
+    const encabezados = ["Nombre", "Telefono", "Servicio", "Fecha", "Hora", "Estado", "Comentario", "Creado"];
+    const filas = reservasCache.map((r) =>
+      [r.nombre, r.telefono, r.servicio, r.fecha, r.hora, r.estado, r.comentario || "", r.creado]
+        .map((campo) => `"${String(campo).replace(/"/g, '""')}"`)
+        .join(",")
+    );
+    const csv = [encabezados.join(","), ...filas].join("\n");
+    const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const enlace = document.createElement("a");
+    enlace.href = url;
+    enlace.download = `reservas-glow-beauty-${new Date().toISOString().split("T")[0]}.csv`;
+    enlace.click();
+    URL.revokeObjectURL(url);
+  });
+
   // ============================
   // SERVICIOS
   // ============================
@@ -172,21 +216,43 @@ if (sidebar) {
 
     const grid = document.getElementById("gridServiciosAdmin");
     grid.innerHTML = servicios
-      .map(
-        (s) => `
+      .map((s) => {
+        let infoDisponibilidad = "";
+        if (s.activo === false) {
+          if (s.disponibleDesde) {
+            const fechaObjetivo = new Date(s.disponibleDesde);
+            const diffMs = fechaObjetivo - new Date();
+            const fechaLegible = fechaObjetivo.toLocaleString("es-BO", { dateStyle: "long", timeStyle: "short" });
+            if (diffMs > 0) {
+              const dias = Math.floor(diffMs / 86400000);
+              const horas = Math.floor((diffMs % 86400000) / 3600000);
+              const texto = dias >= 1 ? `en ${dias} día${dias > 1 ? "s" : ""}` : `en ${horas} hora${horas > 1 ? "s" : ""}`;
+              infoDisponibilidad = `<p style="color:var(--dorado);font-size:.78rem;margin-top:8px;"><i class="fa-regular fa-clock"></i> Vuelve ${texto} (${fechaLegible})</p>`;
+            } else {
+              infoDisponibilidad = `<p style="color:var(--peligro);font-size:.78rem;margin-top:8px;"><i class="fa-regular fa-clock"></i> Fecha ya pasada, reactívalo manualmente</p>`;
+            }
+          } else {
+            infoDisponibilidad = `<p style="color:var(--texto-sec);font-size:.78rem;margin-top:8px;"><i class="fa-regular fa-clock"></i> Sin fecha de retorno definida</p>`;
+          }
+        }
+        return `
       <div class="card-servicio-admin">
         <img src="${s.imagen}" alt="${s.nombre}">
         <div class="contenido">
-          <h4>${s.nombre}</h4>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+            <h4>${s.nombre}</h4>
+            <span class="badge ${s.activo === false ? "cancelada" : "confirmada"}">${s.activo === false ? "Inactivo" : "Activo"}</span>
+          </div>
           <p>${s.descripcion}</p>
           <span class="precio-admin">Bs ${s.precio}</span> · <span style="color:var(--texto-sec);font-size:.82rem">${s.duracion}</span>
+          ${infoDisponibilidad}
           <div class="botones-card">
             <button class="btn-admin secundario peq" data-editar="${s.id}"><i class="fa-solid fa-pen"></i> Editar</button>
             <button class="btn-admin peligro peq" data-eliminar="${s.id}"><i class="fa-solid fa-trash"></i></button>
           </div>
         </div>
-      </div>`
-      )
+      </div>`;
+      })
       .join("");
 
     grid.querySelectorAll("[data-editar]").forEach((btn) =>
@@ -206,8 +272,66 @@ if (sidebar) {
     document.getElementById("servicioPrecio").value = servicio?.precio || "";
     document.getElementById("servicioDuracion").value = servicio?.duracion || "";
     document.getElementById("servicioImagen").value = servicio?.imagen || "";
+
+    const activo = servicio ? servicio.activo !== false : true;
+    document.getElementById("servicioActivo").checked = activo;
+    document.getElementById("servicioDisponibleDesde").value = servicio?.disponibleDesde || "";
+    document.getElementById("servicioNota").value = servicio?.nota || "";
+    actualizarVistaDisponibilidad();
+
     document.getElementById("modalServicio").classList.add("activo");
   }
+
+  function actualizarVistaDisponibilidad() {
+    const activo = document.getElementById("servicioActivo").checked;
+    const textoEstado = document.getElementById("estadoActualTexto");
+    const bloqueInactivo = document.getElementById("bloqueInactivo");
+
+    bloqueInactivo.style.display = activo ? "none" : "block";
+    if (activo) {
+      textoEstado.textContent = "Activo — visible y disponible para reservar";
+      textoEstado.classList.remove("inactivo");
+    } else {
+      textoEstado.textContent = "Inactivo — los clientes verán este servicio como no disponible";
+      textoEstado.classList.add("inactivo");
+    }
+    calcularTiempoRestante();
+  }
+
+  function calcularTiempoRestante() {
+    const resumen = document.getElementById("resumenTiempoRestante");
+    const valor = document.getElementById("servicioDisponibleDesde").value;
+
+    if (!valor) {
+      resumen.textContent = "Sin fecha definida: el servicio quedará marcado como \"próximamente disponible\" hasta que lo reactives manualmente.";
+      return;
+    }
+
+    const fechaObjetivo = new Date(valor);
+    const ahora = new Date();
+    const diffMs = fechaObjetivo - ahora;
+
+    const fechaLegible = fechaObjetivo.toLocaleString("es-BO", { dateStyle: "long", timeStyle: "short" });
+
+    if (diffMs <= 0) {
+      resumen.textContent = `Esa fecha (${fechaLegible}) ya pasó. El sitio mostrará "próximamente disponible" hasta que lo reactives.`;
+      return;
+    }
+
+    const minutos = Math.floor(diffMs / 60000);
+    const horas = Math.floor(minutos / 60);
+    const dias = Math.floor(horas / 24);
+
+    let restante;
+    if (dias >= 1) restante = `${dias} día${dias > 1 ? "s" : ""}`;
+    else if (horas >= 1) restante = `${horas} hora${horas > 1 ? "s" : ""}`;
+    else restante = `${minutos} minuto${minutos > 1 ? "s" : ""}`;
+
+    resumen.textContent = `Vuelve a estar disponible en ${restante} (el ${fechaLegible}).`;
+  }
+
+  document.getElementById("servicioActivo").addEventListener("change", actualizarVistaDisponibilidad);
+  document.getElementById("servicioDisponibleDesde").addEventListener("input", calcularTiempoRestante);
 
   async function eliminarServicio(id) {
     if (!confirm("¿Eliminar este servicio?")) return;
@@ -227,6 +351,9 @@ if (sidebar) {
       precio: document.getElementById("servicioPrecio").value,
       duracion: document.getElementById("servicioDuracion").value,
       imagen: document.getElementById("servicioImagen").value,
+      activo: document.getElementById("servicioActivo").checked,
+      disponibleDesde: document.getElementById("servicioDisponibleDesde").value,
+      nota: document.getElementById("servicioNota").value,
     };
 
     if (id) {
@@ -254,11 +381,18 @@ if (sidebar) {
         <img src="${g.url}" alt="${g.titulo}">
         <div class="overlay-galeria">
           <span>${g.titulo}</span>
-          <button class="btn-admin peligro peq" data-eliminar-img="${g.id}"><i class="fa-solid fa-trash"></i> Eliminar</button>
+          <div style="display:flex;gap:8px;">
+            <button class="btn-admin secundario peq" data-editar-img="${g.id}"><i class="fa-solid fa-pen"></i> Reemplazar</button>
+            <button class="btn-admin peligro peq" data-eliminar-img="${g.id}"><i class="fa-solid fa-trash"></i></button>
+          </div>
         </div>
       </div>`
       )
       .join("");
+
+    grid.querySelectorAll("[data-editar-img]").forEach((btn) =>
+      btn.addEventListener("click", () => abrirModalGaleria(imagenes.find((g) => g.id === btn.dataset.editarImg)))
+    );
 
     grid.querySelectorAll("[data-eliminar-img]").forEach((btn) =>
       btn.addEventListener("click", async () => {
@@ -269,20 +403,130 @@ if (sidebar) {
     );
   }
 
-  document.getElementById("btnNuevaImagen").addEventListener("click", () => {
+  function abrirModalGaleria(imagen) {
+    document.getElementById("tituloModalGaleria").textContent = imagen ? "Reemplazar imagen" : "Agregar imagen a la galería";
+    document.getElementById("btnGuardarGaleria").textContent = imagen ? "Guardar cambios" : "Agregar";
+    document.getElementById("galeriaId").value = imagen?.id || "";
+    document.getElementById("galeriaUrl").value = imagen?.url || "";
+    document.getElementById("galeriaTitulo").value = imagen?.titulo || "";
     document.getElementById("modalGaleria").classList.add("activo");
+    actualizarPreviewGaleria();
+  }
+
+  function actualizarPreviewGaleria() {
+    const url = document.getElementById("galeriaUrl").value.trim();
+    const wrap = document.getElementById("previewWrap");
+    const img = document.getElementById("previewImagen");
+    const error = document.getElementById("previewError");
+
+    if (!url) { wrap.style.display = "none"; return; }
+
+    wrap.style.display = "block";
+    error.style.display = "none";
+    img.style.display = "block";
+    img.src = url;
+  }
+
+  document.getElementById("previewImagen").addEventListener("error", () => {
+    document.getElementById("previewImagen").style.display = "none";
+    document.getElementById("previewError").style.display = "block";
   });
+  document.getElementById("previewImagen").addEventListener("load", () => {
+    document.getElementById("previewError").style.display = "none";
+  });
+  document.getElementById("galeriaUrl").addEventListener("input", actualizarPreviewGaleria);
+
+  document.getElementById("btnNuevaImagen").addEventListener("click", () => abrirModalGaleria(null));
 
   document.getElementById("formGaleria").addEventListener("submit", async (e) => {
     e.preventDefault();
+    const id = document.getElementById("galeriaId").value;
     const payload = {
       url: document.getElementById("galeriaUrl").value,
       titulo: document.getElementById("galeriaTitulo").value,
     };
-    await fetch(`${API_BASE}/gallery`, { method: "POST", headers: authHeaders(), body: JSON.stringify(payload) });
+
+    if (id) {
+      await fetch(`${API_BASE}/gallery/${id}`, { method: "PUT", headers: authHeaders(), body: JSON.stringify(payload) });
+    } else {
+      await fetch(`${API_BASE}/gallery`, { method: "POST", headers: authHeaders(), body: JSON.stringify(payload) });
+    }
     document.getElementById("formGaleria").reset();
     document.getElementById("modalGaleria").classList.remove("activo");
     cargarGaleriaAdmin();
+  });
+
+  // ============================
+  // CONFIGURACIÓN GENERAL
+  // ============================
+  async function cargarConfiguracionAdmin() {
+    const res = await fetch(`${API_BASE}/settings`);
+    const cfg = await res.json();
+    document.getElementById("cfgNombre").value = cfg.nombreNegocio || "";
+    document.getElementById("cfgWhatsapp").value = cfg.whatsapp || "";
+    document.getElementById("cfgTelefonoFijo").value = cfg.telefonoFijo || "";
+    document.getElementById("cfgCorreo").value = cfg.correo || "";
+    document.getElementById("cfgDireccion").value = cfg.direccion || "";
+    document.getElementById("cfgHorario").value = cfg.horario || "";
+    document.getElementById("cfgMapaUrl").value = cfg.mapaUrl || "";
+    document.getElementById("cfgInstagram").value = cfg.instagram || "";
+    document.getElementById("cfgFacebook").value = cfg.facebook || "";
+    document.getElementById("cfgTiktok").value = cfg.tiktok || "";
+  }
+
+  document.getElementById("formConfiguracion").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const payload = {
+      nombreNegocio: document.getElementById("cfgNombre").value,
+      whatsapp: document.getElementById("cfgWhatsapp").value,
+      telefonoFijo: document.getElementById("cfgTelefonoFijo").value,
+      correo: document.getElementById("cfgCorreo").value,
+      direccion: document.getElementById("cfgDireccion").value,
+      horario: document.getElementById("cfgHorario").value,
+      mapaUrl: document.getElementById("cfgMapaUrl").value,
+      instagram: document.getElementById("cfgInstagram").value,
+      facebook: document.getElementById("cfgFacebook").value,
+      tiktok: document.getElementById("cfgTiktok").value,
+    };
+    const mensaje = document.getElementById("mensajeConfig");
+    try {
+      const res = await fetch(`${API_BASE}/settings`, { method: "PUT", headers: authHeaders(), body: JSON.stringify(payload) });
+      if (res.ok) {
+        mensaje.textContent = "Cambios guardados correctamente. Ya se reflejan en el sitio público.";
+        mensaje.className = "mensaje-config ok";
+      } else {
+        mensaje.textContent = "Ocurrió un error al guardar los cambios.";
+        mensaje.className = "mensaje-config error";
+      }
+    } catch {
+      mensaje.textContent = "No se pudo conectar con el servidor.";
+      mensaje.className = "mensaje-config error";
+    }
+  });
+
+  document.getElementById("formPassword").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const payload = {
+      claveActual: document.getElementById("pwdActual").value,
+      nuevoUsuario: document.getElementById("pwdUsuario").value,
+      nuevaClave: document.getElementById("pwdNueva").value,
+    };
+    const mensaje = document.getElementById("mensajePassword");
+    try {
+      const res = await fetch(`${API_BASE}/auth/password`, { method: "PUT", headers: authHeaders(), body: JSON.stringify(payload) });
+      const data = await res.json();
+      if (res.ok) {
+        mensaje.textContent = "Contraseña actualizada correctamente.";
+        mensaje.className = "mensaje-config ok";
+        document.getElementById("formPassword").reset();
+      } else {
+        mensaje.textContent = data.error || "No se pudo cambiar la contraseña.";
+        mensaje.className = "mensaje-config error";
+      }
+    } catch {
+      mensaje.textContent = "No se pudo conectar con el servidor.";
+      mensaje.className = "mensaje-config error";
+    }
   });
 
   // ---- Cerrar modales ----
@@ -294,4 +538,5 @@ if (sidebar) {
   cargarReservas();
   cargarServiciosAdmin();
   cargarGaleriaAdmin();
+  cargarConfiguracionAdmin();
 }

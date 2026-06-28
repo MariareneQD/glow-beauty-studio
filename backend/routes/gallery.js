@@ -22,6 +22,21 @@ router.post("/", verificarToken, (req, res) => {
   res.status(201).json(nueva);
 });
 
+// PUT /api/gallery/:id (admin) - reemplazar imagen/título existente
+router.put("/:id", verificarToken, (req, res) => {
+  const galeria = readData("gallery.json");
+  const idx = galeria.findIndex((g) => g.id === req.params.id);
+  if (idx === -1) return res.status(404).json({ error: "Imagen no encontrada." });
+
+  galeria[idx] = {
+    ...galeria[idx],
+    url: req.body.url || galeria[idx].url,
+    titulo: req.body.titulo || galeria[idx].titulo,
+  };
+  writeData("gallery.json", galeria);
+  res.json(galeria[idx]);
+});
+
 // DELETE /api/gallery/:id (admin)
 router.delete("/:id", verificarToken, (req, res) => {
   let galeria = readData("gallery.json");
